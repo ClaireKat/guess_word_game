@@ -49,7 +49,7 @@ const playerInput = function (input) {
     return input;
   }
 };
-
+// function to take your guessed letter and put them in the array of guesses or signal that letter was already guessed
 const makeGuess = function (letter) {
   letter = letter.toUpperCase();
   if (guessedLetters.includes(letter)) {
@@ -57,5 +57,42 @@ const makeGuess = function (letter) {
   } else {
     guessedLetters.push(letter);
     console.log(guessedLetters);
+    lettersGuessed();
+    wordInProgress(guessedLetters);
+  }
+};
+
+// function to show the letters guessed
+const lettersGuessed = function () {
+  guessedLetterElement.innerHTML = "";
+  for (const letter of guessedLetters) {
+    const li = document.createElement("li");
+    li.innerText = letter;
+    guessedLetterElement.append(li);
+  }
+};
+
+const wordInProgress = function (guessedLetters) {
+  //replace the circles with the correctly guessed letters
+  const wordUpper = word.toUpperCase();
+  // split function splits a string into substrings and returns them each as an array
+  const wordArray = wordUpper.split("");
+  // if wordArray contains any letters from the guessedLetters array update circle with that letter
+  const circleReplacer = [];
+  for (const letter of wordArray) {
+    if (guessedLetters.includes(letter)) {
+      circleReplacer.push(letter.toUpperCase());
+    } else {
+      circleReplacer.push("●");
+    }
+  }
+  progress.innerText = circleReplacer.join("");
+  didIWin();
+};
+
+const didIWin = function () {
+  if (word.toUpperCase() === progress.innerText) {
+    message.classList.add("win");
+    message.innerHTML = `<p class="highlight">You guessed the word! Good work!</p>`;
   }
 };
