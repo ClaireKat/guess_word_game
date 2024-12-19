@@ -115,7 +115,7 @@ const guessCount = function (guess) {
   }
 
   if (remainingGuesses === 0) {
-    message.innerHTML = `You loser. The word was <span class="highlight">${word}</span>.`;
+    message.innerHTML = `Aw snap 🫰🏼, you have a big brain and you were so close! The word was <span class="highlight">${word}</span>.`;
     startOver();
   } else if (remainingGuesses === 1) {
     remainingGuessesSpan.innerHTML = `${remainingGuesses} guess.`;
