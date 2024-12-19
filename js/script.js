@@ -5,9 +5,10 @@ const progress = document.querySelector(".word-in-progress");
 const remainingGuessesElement = document.querySelector(".remaining");
 const message = document.querySelector(".message");
 const playAgainButton = document.querySelector(".play-again");
+const remainingGuessesSpan = document.querySelector(".remaining span");
 
 let word = "magnolia";
-const guessedLetters = [];
+let guessedLetters = [];
 let remainingGuesses = 8;
 
 const getWord = async function () {
@@ -22,6 +23,8 @@ const getWord = async function () {
   wordProgress(word);
 };
 
+getWord();
+
 const wordProgress = function (word) {
   // have a black circle for each letter in the 'word' variable
   const placeholders = [];
@@ -31,8 +34,6 @@ const wordProgress = function (word) {
   // use join() method otherwise the array elements will be separated by a comma
   progress.innerText = placeholders.join("");
 };
-
-getWord();
 
 button.addEventListener("click", function (e) {
   e.preventDefault();
@@ -114,11 +115,12 @@ const guessCount = function (guess) {
   }
 
   if (remainingGuesses === 0) {
-    remainingGuessesElement.innerHTML = `You loser. The word was <span class="highlight">${word}</span>.`;
+    message.innerHTML = `You loser. The word was <span class="highlight">${word}</span>.`;
+    startOver();
   } else if (remainingGuesses === 1) {
-    remainingGuessesElement.innerHTML = `${remainingGuesses} guess remaining.`;
+    remainingGuessesSpan.innerHTML = `${remainingGuesses} guess.`;
   } else {
-    remainingGuessesElement.innerHTML = `${remainingGuesses} guesses remain.`;
+    remainingGuessesSpan.innerHTML = `${remainingGuesses} guesses.`;
   }
 };
 
@@ -126,5 +128,30 @@ const didIWin = function () {
   if (word.toUpperCase() === progress.innerText) {
     message.classList.add("win");
     message.innerHTML = `<p class="highlight">You guessed the word! Good work!</p>`;
+
+    startOver();
   }
 };
+
+const startOver = function () {
+  button.classList.add("hide");
+  remainingGuessesElement.classList.add("hide");
+  guessedLetterElement.classList.add("hide");
+  playAgainButton.classList.remove("hide");
+};
+
+playAgainButton.addEventListener("click", function () {
+  message.classList.remove("win");
+  guessedLetters = [];
+  remainingGuesses = 8;
+  remainingGuessesSpan.innerText = `${remainingGuesses} guesses.`;
+  guessedLetterElement.innerHTML = "";
+  message.innerText = "";
+
+  getWord();
+
+  button.classList.remove("hide");
+  playAgainButton.classList.add("hide");
+  remainingGuessesElement.classList.remove("hide");
+  guessedLetterElement.classList.remove("hide");
+});
